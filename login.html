@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>登录</title>
+	<link rel="icon" href="./images/login.ico" type="image/x-icon"/>
+	<link rel="stylesheet" type="text/css" href="./layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="./css/login.css">
+	<script src="./layui/layui.js"></script>
+</head>
+<body>
+	<div class="layui-container">  
+		<div class="layui-col-md4">
+			<img src="./images/glass.jpg" style="width:110%;height:20%; margin-top: 20px;margin-bottom: 20px;">
+		</div>
+		<div class="layui-col-md8">
+			<form class="layui-form"> 
+				<div class="layui-form-item">			
+					<div class="layui-input-block">
+						<h1 style="text-align: left;font-size: 40px;margin-top: 50px;">欢迎登录ICS3</h1>
+						<h2 style="text-align: left;font-size: 30px;margin-bottom: 50px;margin-top: 15px;">每一天，乐在沟通</h2>
+					</div>
+				</div>
+				<div class="layui-form-item">			
+					<div class="layui-input-block">
+						<i class="layui-icon layui-icon-username" style="font-size: 25px; color:#dddddd;"></i>
+						<input type="text" name="name" id="user" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item" style="margin-top: 30px;">
+					<div class="layui-input-block">
+						<i class="layui-icon layui-icon-password" style="font-size: 25px; color:#dddddd;"></i>
+						<input type="password" name="password" id="pass" placeholder="请输入密码" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item" style="margin-top: 30px;">
+					<div class="layui-input-block">
+						<button class="layui-btn layui-btn-fluid" lay-submit lay-filter="login" id="login" style="width: 100px;margin-left: 200px;">登录</button>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<a href="register.html" >没有账号？点击这里注册</a>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="./js/jquery-3.2.1.min.js"></script>
+	<script>
+		layui.use(['element','form','layer'],function(){
+			var element = layui.element;
+			var form = layui.form;
+			var layer = layui.layer;
+
+			var login_url = 'login';
+
+			/*监听登录*/
+			form.on('submit(login)',function(data){
+				data.field.username = $('#user').val();
+				data.field.password = $('#pass').val();
+
+				var username = $('#user').val();
+
+				var formData = JSON.stringify(data.field);
+
+				$.ajax({
+					type: 'post',
+					dataType: 'json',
+					data: formData,
+					contentType: 'application/json;charset=utf-8',
+					url: login_url,
+					success:function(res){
+						if(res.code==1){
+							layer.msg('登录成功',{icon:1,time:2000,},function(){
+								var url = './index.html?username='+username;
+							window.location.href = encodeURI(url);//对中文用户名进行编码
+						});
+						}else if(res.code==2){
+							layer.msg('用户名错误',{
+								icon:2,
+								time:2000
+							});
+						}else{
+							layer.msg('密码错误',{
+								icon:2,
+								time:2000
+							});
+						}
+
+					},
+					error:function(){
+						layer.msg('登录失败',{
+							icon:2,
+							time:2000
+						});
+					}
+				})
+
+				return false;
+			});
+
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+body{
+	background-color: #E9EBFE;
+	
+}
+
+.layui-icon-password{
+	position:absolute;
+	bottom: 5px;
+	left:2px;
+	z-index:1;
+}
+.layui-icon-username{
+	position:absolute;
+	bottom: 5px;
+	left:2px;
+	z-index:1;
+}
+input[type=text],input[type=password]{
+	text-indent: 30px;
+	font-size: 15px; 
+	color:black;
+	width: 500px;
+	border-radius: 5px;
+}
+#login{
+	background-color: #5fb878!important;
+}
+

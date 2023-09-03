@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<title>聊天室</title>
+	<link rel="icon" href="./images/qq.ico" type="image/x-icon"/>
+	<link rel="stylesheet" type="text/css" href="./css/index.css">
+	<link rel="stylesheet" type="text/css" href="./layui/css/layui.css">
+	<script src="./layui/layui.js"></script>
+	<style type="text/css">
+		#Progress_Status { 
+		    width: 100%; 
+		    background-color: #ddd;
+		    border-radius: 5px;
+		    margin:2px 15px 2px 0px;
+		} 
+
+		#myprogressBar {  
+		    height: 12px; 
+		    border-radius: 5px;
+		    text-align: center;
+		    color: #fff;
+		    background-color: #4CAF50; 
+		}
+		#filename{
+			display: inline-block;
+      width:130px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+		}
+		#img{
+			display: inline-block;
+			float: right;
+			width: 30px;
+			height: 30px;
+			margin-bottom: 5px;
+		}
+		
+		#filesize{
+			display: block;
+			margin-top: 3px;
+			font-size: 5px;
+		}
+	</style>
+</head>
+<body>
+	<!--顶部导航-->
+	<ul class="layui-nav">
+		<li class="layui-nav-item">
+			<p>相遇华农，缘起信科</p>
+		</li>
+		<div style="display: inline-block;margin-left: 900px;">
+			<li class="layui-nav-item">
+				<p>欢迎您~</p>
+			</li>
+			<li class="layui-nav-item">
+				<a href=""><img src="./images/QQ.jpg" class="layui-nav-img"><span id="myself"></span></a>
+				<dl class="layui-nav-child">
+					<dd><a href="javascript:;">修改信息</a></dd>
+					<dd><a href="javascript:;" id="logout">退出</a></dd>
+				</dl>
+			</li>
+		</div>
+	</ul>
+
+	<div class="layui-container" style="margin-top: 50px;
+	padding: 20px;border-radius: 10px;">
+		<!--聊天框(群聊)-->
+		<div class="layui-inline">
+			<div class="layui-tab layui-tab-brief" id="chat" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li id="group_friends">群聊</li>
+				</ul>
+				<div class="layui-tab-content" id="chat_content">
+					<div class="layui-tab-item" id="group_chat">
+						
+					</div>
+				</div>
+			</div>     
+			<div id="sendMessage">
+				<div style="text-align: center;margin-top: 5px;">
+					<i class="layui-icon" id="group_file">&#xe621;</i> 
+					<i class="layui-icon" id="group_voice" style="margin-left: 25px;">&#xe688;</i> 
+					<i class="layui-icon" id="group_video" style="margin-left: 25px; ">&#xe6ed;</i>  
+				</div>
+				<textarea id="group_textarea" wrap="hard"></textarea>
+				<a href="#" class="layui-btn layui-btn-sm layui-inline" id="sendTogroup">群发</a>
+			</div>
+		</div>
+		<!--聊天框（单聊）-->
+		<div class="layui-inline">
+			<div class="layui-tab layui-tab-brief" id="chat" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<li class="layui-this" id="my_friends">单聊</li>
+				</ul>
+				<div class="layui-tab-content" id="chat_content">
+					<div class="layui-tab-item">
+						<div id="friends_chat">
+
+						</div>
+					</div>
+				</div>
+			</div>     
+			<div id="sendMessage">
+				<div style="text-align: center;margin-top: 5px;">
+					<input type="file" name="file" id="select_file" value="" style="display: none;">
+					<i class="layui-icon" id="friends_file">&#xe621;</i> 
+					<i class="layui-icon" id="friends_voice" style="margin-left: 25px;">&#xe688;</i> 
+					<i class="layui-icon" id="friends_video" style="margin-left: 25px; ">&#xe6ed;</i>  
+				</div>
+				<textarea id="friends_textarea" wrap="hard"></textarea>
+				<a href="#" class="layui-btn layui-btn-sm layui-inline" id="sendTofriends">发送</a>
+			</div>
+		</div>
+
+		<!--好友列表-->
+		<div class="layui-inline" style="width: 235px;height: 473px; margin-top: 4px;border:solid 1px #E0E0E0;">
+			<div id="public_notice" style="padding: 15px;border-bottom: solid 1px #E0E0E0;">
+				<i class="layui-icon" style="font-size: 16px; color: #FFB800;cursor: pointer;">&#xe645;&nbsp;公告</i> 
+				<p style="margin-top: 10px;">文明交流，友善待友!</p>
+				<p>爱你，么么哒！</p>
+			</div>
+			<div style="padding: 15px;border-bottom: solid 1px #E0E0E0;" id="add_friends">
+				<i class="layui-icon add" style="font-size: 16px; color: #FFB800;cursor: pointer;">&#xe61f;&nbsp;添加好友</i> 
+			</div>
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="padding: 10px;">
+				<ul class="layui-tab-title">
+					<li class="layui-this">好友列表</li>
+					<li>新朋友</li>
+				</ul>
+				<div class="layui-tab-content" id="friends">
+					<div class="layui-tab-item layui-show">
+						<div id="friends_list">
+
+						</div>
+					</div>
+					<div class="layui-tab-item">
+						<div id="new_friends">
+							
+						</div>
+					</div>
+				</div>
+			</div>     
+			
+		</div>
+	</div>
+
+	<!--添加好友弹出层-->
+	<div style="display: none;" id="window">
+		<form class="layui-form" id="form">
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<input type="text" name="friends_name" id="window_friends" placeholder="请输入好友的用户名" lay-verify="required" autocomplete="off" class="layui-input" style="margin-left: -60px;margin-top: 60px;">
+				</div>
+			</div>
+		</form>
+	</div>
+	<!--好友列表模板引擎-->
+	<script type="text/html" id="friends_Tpl">
+		{{#  layui.each(d, function(index, item){ }}
+		<span style="cursor: pointer;display:inline-block; width:60px;line-height: 30px;" class="friends_name" id="{{ item.name }}">{{ item.name }}</span>
+		<div style="text-align: center;">
+		<button class="layui-btn layui-btn-sm del_record" id="{{ item.name }}" style="font-size: 12px;">删除聊天</button>
+		<button class="layui-btn layui-btn-sm del_friends" id="{{ item.name }}" style="font-size: 12px;">删除好友</button>
+		</div>
+		<hr>
+		{{#  }); }}
+		{{#  if(d.length === 0){ }}
+		<div style="text-align: center;">暂无好友</div>
+		{{#  } }} 
+	</script>
+	<!--好友申请模板引擎-->
+	<script type="text/html" id="newfriends_Tpl">
+		{{#  layui.each(d, function(index, item){ }}
+		<span style="display:inline-block; width:60px;line-height: 30px;">{{ item.name }}</span>
+		<button class="layui-btn layui-btn-sm agree" id="{{ item.name }}">同意</button>
+		<button class="layui-btn layui-btn-sm refuse" id="{{ item.name }}">拒绝</button>
+		<hr>
+		{{#  }); }}
+		{{#  if(d.length === 0){ }}
+		<div style="text-align: center;">暂无好友申请</div>
+		{{#  } }} 
+
+	</script>
+	<script src="./js/jquery-3.2.1.min.js"></script>
+	<!--好友管理-->
+	<script src="./js/friends.js"></script>
+	<!--群聊和单聊-->
+	<script src="./js/chatWord.js"></script>
+	<!--获取聊天记录-->
+	<script src="./js/chatRecord.js"></script>
+	<script>
+		layui.use(['element','form','layer','laytpl','upload'],function(){
+			var element = layui.element;
+			var form = layui.form;
+			var layer = layui.layer;
+			var laytpl = layui.laytpl;
+			var upload = layui.upload;
+
+			$(document).ready(function(){
+				layer.msg('欢迎来到信科聊天室，祝您聊天愉快！',{
+					icon:6,
+					time:2000
+				});
+			});
+            //从登录界面获取用户名
+            function getQueryVariable(variable){
+            	var query = window.location.search.substring(1);
+            	var vars = query.split("&");
+            	for (var i=0;i<vars.length;i++) {
+            		var pair = vars[i].split("=");
+            		if(pair[0] == variable){return pair[1];}
+            	}
+
+            }
+		    var username = decodeURI(getQueryVariable('username'));//获取url中用户名的值
+		    $('#myself').text(username);
+
+	        //退出
+	        $('#logout').on('click',function(){
+	        	$('#myself').text();
+	        	layer.msg('正在登出',{
+	        		icon:6,
+	        		time:2000,
+	        		end:function(){
+	        			window.location.href = './login.html';
+	        		}
+	        	});
+	        	
+	        });
+	        /*获取信息发送与接收时间*/
+			function getChattime(){
+				var date = new Date();
+
+			    var hours = date.getHours();
+			    var minutes = date.getMinutes();
+			    if(hours<10){
+			         hours = '0'+hours;
+			    }
+			    if(minutes<10){
+			         minutes = '0'+minutes;
+			    }
+			    var time = hours+":"+minutes;
+
+				return time;
+			}
+
+	        $('#friends_file').click(function(){
+	        	var select_file = document.getElementById('select_file');
+	        	select_file.click();//把点击选择文件事件绑定到文件图标上
+	        });
+	        var fileBox = document.getElementById('select_file');
+			var reader = null;  //读取操作对象
+			var step = 1024 * 9;  //每次读取文件大小 ,字节数（1k=1024字节）
+			var cuLoaded = null; //当前已经读取总数
+			var file = null; //当前读取的文件对象
+			var enableRead = true;//标识是否可以读取文件
+			var total = null;        //记录当前文件总字节数
+			fileBox.onchange = function () {
+			    //获取文件对象
+			    file = this.files[0];
+			    console.log(file);
+			    total = file.size;
+			    filename = file.name;
+			    console.info("文件大小：" + file.size);
+			
+			    bindReader();
+			}
+			//绑定reader
+			function bindReader() {
+				cuLoaded = 0;
+			    // enableRead = true;
+			    reader = new FileReader();
+			     //开始读取
+			    readBlob();
+			    //读取一段成功
+			    reader.onload = function (e) {
+			    	alert(e.loaded)
+			        console.info('读取总数：' + e.loaded);
+			        if (enableRead == false)
+			            return false;
+			        //根据当前缓冲区来控制客户端读取速度
+			        if (ws.bufferedAmount > step * 10) {
+			            setTimeout(function () {
+			                //继续读取
+			                console.log('--------------》进入等待');
+			                loadSuccess(e.loaded);
+			            }, 3);
+			        } else {
+			            //继续读取
+			            loadSuccess(e.loaded);
+			        }
+			    }
+			   
+			}
+			//读取文件成功处理
+			function loadSuccess(loaded) {
+			    //将分段数据上传到服务器
+			    var blob = reader.result;
+			    var size = null;
+			    if(total>=1000000){//超过1M
+			    	var num = total/1000000;
+			    	size = num.toFixed(1)+'MB';//保留一位小数
+			    }else{
+			    	var num = total/1000;
+			    	size = num.toFixed(1)+'KB';
+			    }
+
+			    //创建文件显示框
+			   	var mydiv = document.createElement('div');
+			   	var span = document.createElement('span');
+			   	span.setAttribute('id','myspan');
+			   	var time = getChattime();
+				span.innerHTML = time;
+			     
+		    	var div = '<p id="filename" title=""></p>'+
+			    		  '<img src="./images/file.png" id="img">'+
+			    		  '<span id="filesize"></span>'+
+			    		  '<hr>'+
+						  '<div id="Progress_Status"><div id="myprogressBar"></div></div>';
+				
+			    mydiv.innerHTML = div;
+			    mydiv.setAttribute('id', 'filebox');
+
+			    $('#filename').text(filename);
+			    $('#filename').attr('title',filename);
+			    $('#filesize').text(size);
+			    mydiv.style['margin-left'] = '241px';
+				mydiv.style['margin-top'] = '10px';
+			    var bar = document.getElementById('myprogressBar');
+			   
+			    //使用WebSocket 服务器发送数据
+			    if (cuLoaded == 0){
+			    	//读取文件前向服务器发送文件名、文件大小、好友名
+					var name = $('#my_friends').html();
+					var msg = JSON.stringify({"To":name,"filename":filename,"size":total});
+					ws.send(msg);
+										
+					var console = document.getElementById('friends_chat');
+					console.appendChild(span);
+					console.appendChild(mydiv);
+				}
+				
+					
+			    ws.send(blob);
+			    //如果没有读完，继续
+			    cuLoaded += loaded;
+			    if (cuLoaded < total) {
+			        readBlob();
+			    }
+			    //显示结果进度
+			    var percent = parseInt((cuLoaded / total) * 100);
+			    bar.style['width'] = percent+'%';
+			    bar.innerHTML = percent+'%';
+
+			    
+			}
+			 var num=0;//定义一个变量来控制点击事件的次数
+			 $('#friends_chat').click(function(){
+			     fullScreen();
+			 });
+			 function fullScreen(){ //这个就是要用的的点击事件
+			     if(num++ %2 == 0){//根据是否能整除进行判断
+			     	alert(num)
+			         console.info('中止，cuLoaded：' + cuLoaded);
+			         // enableRead = false;
+			         reader.abort();
+			     }else{
+			         console.info('继续，cuLoaded：' + cuLoaded);
+			         // enableRead = true;
+			         readBlob();
+			     }
+			 }
+			
+			//当断网的时候触发的回调
+			window.addEventListener("offline", function () {
+			     console.info('中止，cuLoaded：' + cuLoaded);
+			     // enableRead = false;
+			     reader.abort();
+			}, false);
+			window.addEventListener("online", function () {
+			     console.info('继续，cuLoaded：' + cuLoaded);
+			     // enableRead = true;
+			     readBlob();
+			}, false);
+			//指定开始位置，分块读取文件
+			function readBlob() {
+			    //指定开始位置和结束位置读取文件
+			    var blob = file.slice(cuLoaded, cuLoaded + step);
+			    reader.readAsArrayBuffer(blob);
+			}
+			
+			var ws = null;
+			//创建和服务器的WebSocket 链接
+			function createSocket(onSuccess) {
+			    var url = 'ws://106.54.251.66:8080/websocketfile/'+username;
+			    ws = new WebSocket(url);
+
+			    ws.onopen = function () {
+			        console.log('connected成功');
+			        if (onSuccess)
+			            onSuccess();
+			    }
+			    ws.onmessage = function (message) {
+			        var str = message.data; //后台发来的信息格式: 文件:from:lzm:url:106.54.251.66:8080/file/web.xml:filename:web.xml:filesize:1111111
+			        var arr = str.split(':');
+			        var arr2 = arr[2];//好友名字
+			        var url = 'http://'+arr[4]+':'+arr[5];//文件地址
+			        var arr7 = arr[7];//文件名
+			        var total = arr[9];//文件大小
+			        
+			        var size = null;
+			        if(total>=1000000){//超过1M
+				    	var num = total/1000000;
+				    	size = num.toFixed(1)+'MB';//保留一位小数
+				    }else{
+				    	var num = total/1000;
+				    	size = num.toFixed(1)+'KB';
+				    }
+			        $('#my_friends').html(arr2);
+			        var mydiv = document.createElement('div');
+				   	var span = document.createElement('span');
+				   	span.setAttribute('id','myspan');
+				   	var time = getChattime();
+					span.innerHTML = time;
+
+			    	var div = '<p id="filename" title=""></p>'+
+				    		  '<img src="./images/file.png" id="img">'+
+				    		  '<span id="filesize"></span>'+
+				    		  '<hr>';
+					
+				    mydiv.innerHTML = div;
+				    mydiv.setAttribute('id', 'filebox');
+
+				    $('#filename').text(arr7);
+				    $('#filename').attr('title',arr7);
+				    $('#filesize').text(size);
+					mydiv.style['margin-top'] = '10px';
+
+					var console = document.getElementById('friends_chat');
+					console.appendChild(span);
+					console.appendChild(mydiv);
+					$('#filebox').click(function(){
+						layer.confirm('是否前往下载该文件',{title:'下载文件'},function(index){
+							layer.msg('正在前往',{icon:6,time:2000},function(){
+								window.open(url,'_blank');
+								layer.close(index);
+							});
+
+						});
+					});
+			    }
+			    ws.onclose = function (e) {
+			        console.log('链接断开');
+			    }
+			    ws.onerror = function (e) {
+			        console.info(e);
+			        console.log('传输中发生异常');
+			    }
+			}
+			//页面加载完建立链接
+			createSocket();
+	       
+	       
+        });
+    </script>
+</body>
+</html>

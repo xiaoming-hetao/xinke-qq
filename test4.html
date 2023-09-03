@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>FileUpload</title>
+    <script src="/static/js/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<input type="file" id="file">
+<input type="button" id="but" value="上传">
+<textarea><p>ffffffffff</p></textarea>
+</body>
+<script>
+    var file = $('#file');
+    var f;
+    file.on('change', function (e) {
+        var files = e.currentTarget.files;
+        f = files[0]
+        uploadFileInfo(f);
+
+    });
+
+    function uploadFileInfo(f) {
+        var fileInfo = {};
+        fileInfo.fileName = f.name;
+        fileInfo.fileSize = f.size;
+        fileInfo.fileInfo = f.type;
+        fileInfo.fileId = Date.parse(new Date());//写死一个hash值
+        ws.send(JSON.stringify(fileInfo));
+    }
+
+    function uploadFile(obj) {
+        var blob = f.slice(obj.indexStart, obj.indexEnd);
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            ws.send(e.target.result);
+        };
+        reader.readAsArrayBuffer(blob);
+    }
+
+    var options = {
+        concurrentHash: 2,
+        concurrentUpload: 2,
+        debugMode: false,
+        wsuri: 'ws://localhost:8080/websocket/fileup'
+    };
+
+
+    var onmessage = function (that) {
+        return function (e) {
+            var obj = JSON.parse(e.data);
+            if (obj.typeId == 'uploadCommand') {
+                console.log('文件完成：' + parseInt(obj.completePercent * 65 + 35, 10) + '%');
+                if (obj.completePercent != 1) {
+                    uploadFile(obj);
+                } else {
+                    console.log('文件上传完成，开始上传下一个文件。');
+                }
+            }
+        }
+    }
+
+    var onopen = function (that) {
+        console.log('Websocket is opened.');
+    }
+
+
+    var ws;
+    $(function () {
+        ws = new WebSocket(options.wsuri);
+        ws.onopen = onopen(this);
+        ws.onmessage = onmessage(this);
+    });
+
+</script>
+</html>

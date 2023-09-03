@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	      
+        .bubbleItem{
+            width: 100%;
+        }
+        .bubble{
+            width: 100px;
+      
+			height:200px; 
+			min-height:200px;
+            position: relative;
+            line-height: 30px;
+            padding-left: 10px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            border-radius: 7px;
+            margin-top: 15px;
+            padding-right: 10px;
+            display: inline-block;
+        }
+        .leftBubble{
+            position: relative;
+            margin-left: 25px;
+            border: 1px solid #00b6b6;
+            background-color: #f8fdfc;
+        }
+        .leftBubble .bottomLevel{
+            position: absolute;
+            top: 10px;
+            left: -10px;
+            border-top: 10px solid #00b6b6;
+            border-left: 10px solid transparent;
+        }
+        .leftBubble .topLevel{
+            position: absolute;
+            top: 11px;
+            left: -8px;
+            border-top: 10px solid #f8fdfc;
+            border-left: 10px solid transparent;
+            z-index: 100;
+        }
+        .rightBubble{
+            position: relative;
+            margin-right: 25px;
+            float: right;
+            border: 1px solid #aaa;
+        }
+        .rightBubble .bottomLevel{
+            position: absolute;
+            bottom: 11px;
+            right: -10px;
+            border-bottom: 10px solid #aaa;
+            border-right: 10px solid transparent;
+        }
+        .rightBubble .topLevel{
+            position: absolute;
+            bottom: 12px;
+            right: -8px;
+            border-bottom: 10px solid #fff;
+            border-right: 10px solid transparent;
+            z-index: 100;
+        }
+        .clearfix:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+</style>
+<body>
+	    <div class="bubbleDiv">
+        <div class="bubbleItem">     <!--左侧的泡泡-->
+            <span class="bubble leftBubble">
+                老师，你好adasdasdadfdsfsfsfdfsfdfds！
+                <span class="bottomLevel"></span>
+                <span class="topLevel"></span>
+            </span>
+        </div>
+ 
+ 
+        <div class="bubbleItem clearfix">
+            <span class="bubble rightBubble">
+                老师，你好！
+                <span class="bottomLevel"></span>
+                <span class="topLevel"></span>
+            </span>
+        </div>
+ 
+ 
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  <meta charset="utf-8">
+</head>
+<style type="text/css">
+	.test {
+  width   : 50px;
+  height  : 200px;
+  overflow: auto;
+  float   : left;
+  margin  : 5px;
+  border  : none;
+  }
+  .scrollbar {
+  width : 30px;
+  height: 300px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  }
+	  .test-5::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  }
+  .test-5::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius   : 10px;
+  background-color: skyblue;
+  background-image: -webkit-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+  }
+  .test-5::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : #ededed;
+  border-radius: 10px;
+  }
+  #Progress_Status { 
+  width: 12%; 
+  background-color: #ddd; 
+
+} 
+
+#myprogressBar { 
+  width: 0; 
+  height: 15px; 
+  background-color: #4CAF50; 
+}
+</style>
+<body>
+<div>
+      <button class="scrollbar" style="border: solid 1px #666;" id="hhh">pppp</button>
+      <li id="testli" value="">12</li>
+      <div id="testp">
+        
+      </div>
+       <div id="testdiv">
+        
+      </div>
+      <div class="test"></div>
+      <div class="test"></div>
+      <div class="test"></div>
+      <p id="myp" style="background-color: red;"></p>
+      <button id="window">跳转</button>
+      
+</div>
+<script src="./js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+  
+  
+  $('.test').text('hahahahaaaaassss');
+  var num = 2.335335;
+  var size = num.toFixed(2);
+  console.log(size);
+  var filename = 'wenjian';
+  $('#myp').html(filename);
+	var test = null;
+	$('#hhh').click(function(){
+		 
+	  var name=$('#testli').html();
+    test = 1;
+    var p = document.createElement('progress');
+   
+	});
+  var str = '文件:from:lzm:url:106.54.251.66:8080/file/前端.zip:filename:web.xml';
+  var arr = str.split(':');
+  var arr1 = arr[0];
+  var url = 'http://'+arr[4]+':'+arr[5];
+
+  console.log(url);
+  $('#window').click(function(){
+    window.open(url,'_blank');
+  });
+	console.log(arr);
+  console.log(arr1);
+
+  var h = 'gggg';
+  var id = $('#hhh').attr('id',h);
+  var testid = document.getElementById('id');
+  alert(id);
+  var p = document.createElement('p');
+  var div = '<div id="Progress_Status"><div id="myprogressBar"></div></div><span>%</span>';
+  p.innerHTML = div;
+	var console = document.getElementById('testdiv');
+  console.appendChild(p);
+  $("#hhh").toggle(
+  function(){
+  $("body").css("background-color","green");},
+  function(){
+  $("body").css("background-color","red");}
+);
+</script>
+</body>
+</html>

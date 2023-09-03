@@ -1,0 +1,26 @@
+<html>
+<head>
+
+</head>
+<body>
+<button id="test">请点击这里，来切换不同的背景颜色</button>
+<script src="./js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+var num=0;//定义一个变量来控制点击事件的次数
+$('#test').click(function(){
+	fullScreen();
+});
+function fullScreen(){ //这个就是要用的的点击事件
+    if(num++ %2 == 0){//根据是否能整除进行判断
+        console.log("这里部分写你点击第一次要实现的功能代码");//就像下面的代码：
+        $("body").css("background-color","red");//第一次点击将整个body添加红色背景色
+    }else{
+        console.log("这里部分写你点击第二次要实现的功能代码");
+        $("body").css("background-color","black");//第二次点击将整个body背景色改为黑色
+    }
+}
+
+</script>
+</body>
+</html>
+
